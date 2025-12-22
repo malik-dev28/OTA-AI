@@ -271,3 +271,33 @@
         max-width: 160px;
     }
 }
+
+@media (max-width: 800px) {
+    .sidebar {
+        /* On mobile/tablet, make sidebar an overlay or fixed strip */
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0; /* ensure full height */
+        height: 100svh;
+        z-index: 999;
+        /* Keep it slim unless expanded */
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar {
+        width: 60px; /* Slimmer on mobile */
+        padding: 20px 10px;
+    }
+    
+    .sidebar.extended {
+        width: 100%; /* Full screen menu on mobile expand */
+        max-width: 280px; 
+    }
+    
+    .menu {
+        width: 40px;
+        height: 40px;
+    }
+}
