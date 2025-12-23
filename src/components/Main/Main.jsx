@@ -32,22 +32,22 @@ const Main = () => {
     const suggestionCards = [
         {
             text: "NYC to LAX on Christmas",
-            icon: assets.compass_icon,
+            iconClass: "ri-plane-fill",
             prompt: "Search flights from New York to Los Angeles on December 25, 2025"
         },
         {
             text: "London to Paris – New Year deals",
-            icon: assets.bulb_icon,
+            iconClass: "ri-money-dollar-circle-line",
             prompt: "Find flight deals from London to Paris for New Year's, 2 passengers"
         },
         {
             text: "Romantic weekend escape",
-            icon: assets.message_icon,
+            iconClass: "ri-heart-3-line",
             prompt: "Suggest a romantic getaway destination for a couple"
         },
         {
             text: "Budget solo travel 2026",
-            icon: assets.code_icon,
+            iconClass: "ri-compass-discover-line",
             prompt: "Best budget destinations for solo travelers in 2026"
         }
     ];
@@ -61,12 +61,10 @@ const Main = () => {
         <main className="main">
             <nav className="nav">
                 <div className="nav-left">
-                     <img 
-                        src={assets.menu_icon} 
-                        alt="Menu" 
-                        className="mobile-menu-toggle" 
+                     <i 
+                        className="ri-menu-line mobile-menu-toggle" 
                         onClick={() => setExtended(prev => !prev)}
-                     /> 
+                     ></i>
                     <p>OTA Travel App</p>
                 </div>
                 <div className="nav-right">
@@ -75,10 +73,7 @@ const Main = () => {
                         onClick={toggleDarkMode} 
                         aria-label="Toggle dark mode"
                     >
-                        <img 
-                            src={isDarkMode ? assets.sun_icon || assets.bulb_icon : assets.moon_icon || assets.setting_icon} 
-                            alt={isDarkMode ? "Light mode" : "Dark mode"} 
-                        />
+                        <i className={isDarkMode ? "ri-sun-line" : "ri-moon-line"}></i>
                     </button>
                     <img src={assets.user_icon} alt="User" className="user-avatar"/>
                 </div>
@@ -96,11 +91,13 @@ const Main = () => {
                     {showResult && (
                         <div className="result">
                             <div className="result-title">
-                                <img src={assets.user_icon} alt="You"/>
+                                <img src={assets.user_icon} alt="You" className="user-avatar-small"/>
                                 <p>{recentPrompt}</p>
                             </div>
                             <div className="result-data">
-                                <img className="result-data-icon" src={assets.gemini_icon} alt="OTA Travel"/>
+                                <div className="result-data-icon">
+                                    <i className="ri-sparkling-fill"></i>
+                                </div>
                                 {loading ? (
                                     <div className="loader">
                                         <hr/><hr/><hr/>
@@ -114,7 +111,6 @@ const Main = () => {
                 </div>
 
                 {/* Right Sidebar - Full height suggestions */}
-                {/* Right Sidebar - Full height suggestions */}
                 {!showResult && (
                     <aside className="right-sidebar">
                         <h3 className="right-sidebar-title">Quick Travel Ideas</h3>
@@ -125,7 +121,7 @@ const Main = () => {
                                     className="suggestion-card" 
                                     onClick={() => handleSuggestionClick(card.prompt)}
                                 >
-                                    <img src={card.icon} alt=""/>
+                                    <i className={card.iconClass}></i>
                                     <p>{card.text}</p>
                                 </div>
                             ))}
@@ -152,17 +148,17 @@ const Main = () => {
                     />
                     <div className="icon-container">
                         <button aria-label="Attach image">
-                            <img src={assets.gallery_icon} alt="Gallery"/>
+                            <i className="ri-image-add-line"></i>
                         </button>
                         <button aria-label="Voice input">
-                            <img src={assets.mic_icon} alt="Microphone"/>
+                            <i className="ri-mic-line"></i>
                         </button>
                         <button 
                             onClick={() => onSent()}
                             disabled={!input.trim()}
                             aria-label="Send message"
                         >
-                            <img src={assets.send_icon} alt="Send"/>
+                            <i className="ri-send-plane-fill"></i>
                         </button>
                     </div>
                 </div>

@@ -61,15 +61,14 @@
     width: 80px;
 }
 
-.sidebar img {
-    width: 24px;
-    height: 24px;
+.sidebar i {
+    font-size: 22px;
+    color: var(--text-primary);
     transition: all 0.3s ease;
-    filter: brightness(1);
 }
 
-[data-theme="dark"] .sidebar img {
-    filter: brightness(1.1);
+[data-theme="dark"] .sidebar i {
+    color: var(--text-primary);
 }
 
 /* Menu Button */
@@ -89,7 +88,7 @@
     transform: scale(1.08);
 }
 
-.sidebar.extended .menu img {
+.sidebar.extended .menu i {
     transform: rotate(90deg);
 }
 
@@ -125,8 +124,9 @@
     box-shadow: 0 15px 30px var(--new-chat-shadow);
 }
 
-.new-chat img {
-    filter: brightness(0) invert(1);
+.new-chat i {
+    color: white; 
+    font-size: 20px;
 }
 
 /* Recent Section */
@@ -172,9 +172,9 @@
     transform: translateX(6px);
 }
 
-.recent-entry img {
+.recent-entry i {
     opacity: 0.8;
-    width: 22px;
+    font-size: 20px;
 }
 
 .recent-entry-p {
@@ -210,7 +210,7 @@
     background: var(--hover-bg);
 }
 
-.bottom-item img {
+.bottom-item i {
     opacity: 0.75;
 }
 

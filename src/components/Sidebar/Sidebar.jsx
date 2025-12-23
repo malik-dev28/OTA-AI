@@ -17,12 +17,12 @@ const Sidebar = () => {
             <div className={`top ${extended ? '' : 'centered'}`}>
                 {/* Menu Toggle */}
                 <div className="menu" onClick={() => setExtended(prev => !prev)}>
-                    <img src={assets.menu_icon} alt="Menu"/>
+                    <i className="ri-menu-line"></i>
                 </div>
 
                 {/* New Search / New Trip */}
                 <div onClick={() => newChat()} className="new-chat">
-                    <img src={assets.plus_icon} alt="New Trip"/>
+                    <i className="ri-add-line"></i>
                     {extended && <p>New Trip</p>}
                 </div>
 
@@ -37,7 +37,7 @@ const Sidebar = () => {
                                     onClick={() => loadPrompt(item)}
                                     className="recent-entry"
                                 >
-                                    <img src={assets.history_icon} alt=""/>
+                                    <i className="ri-chat-history-line"></i>
                                     <p className="recent-entry-p">
                                         {item.length > 30 ? `${item.slice(0, 30)}...` : item}
                                     </p>
@@ -53,17 +53,17 @@ const Sidebar = () => {
             {/* Bottom Section */}
             <div className={`bottom ${extended ? '' : 'centered'}`}>
                 <div className="bottom-item recent-entry">
-                    <img src={assets.question_icon} alt="Help"/>
+                    <i className="ri-question-line"></i>
                     {extended && <p>Help & FAQ</p>}
                 </div>
 
                 <div className="bottom-item recent-entry">
-                    <img src={assets.history_icon} alt="My Trips"/>
+                    <i className="ri-history-line"></i>
                     {extended && <p>My Trips</p>}
                 </div>
 
                 <div className="bottom-item recent-entry">
-                    <img src={assets.setting_icon} alt="Settings"/>
+                    <i className="ri-settings-3-line"></i>
                     {extended && <p>Settings</p>}
                 </div>
             </div>

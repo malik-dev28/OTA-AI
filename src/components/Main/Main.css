@@ -1036,19 +1036,94 @@ body {
 }
 
 /* Print Styles */
-@media print {
-    .main-bottom,
-    .sidebar,
-    .nav-right {
-        display: none;
-    }
-    
-    .main-container {
-        padding: 0;
-    }
-    
-    .chat-area {
-        padding: 0;
-        overflow: visible;
-    }
+/* Main CSS Updates for Icons */
+.nav i {
+    font-size: 20px;
+}
+
+.mobile-menu-toggle {
+    font-size: 24px;
+    color: var(--text-primary);
+}
+
+.theme-toggle i {
+    font-size: 22px;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* User Avatar Image */
+.user-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid transparent;
+    background: var(--accent-gradient) border-box;
+    box-shadow: var(--shadow-button);
+    transition: transform 0.3s ease;
+}
+
+.user-avatar:hover {
+    transform: scale(1.05);
+}
+
+.user-avatar-small {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: var(--accent-gradient);
+    padding: 2px;
+}
+
+/* Suggestion Card Icons */
+.suggestion-card i {
+    font-size: 24px;
+    padding: 8px;
+    background: var(--input-bg);
+    border-radius: 10px;
+    color: var(--text-secondary);
+    transition: transform 0.3s ease;
+}
+
+.suggestion-card:hover i {
+    transform: scale(1.1) rotate(5deg);
+    background: white;
+    color: #4b90ff;
+}
+
+/* Result Icons */
+
+
+.result-data-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+}
+
+.result-data-icon i {
+    font-size: 28px;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block; /* Ensure proper rendering */
+}
+
+/* Input Area Icons */
+.icon-container button i {
+    font-size: 20px;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.icon-container button:last-child i {
+    -webkit-text-fill-color: white;
 }
