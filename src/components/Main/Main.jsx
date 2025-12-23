@@ -4,7 +4,7 @@ import { assets } from "../../assets/assets.js";
 import { Context } from "../../context/Context.jsx";
 
 const Main = () => {
-    const { onSent, recentPrompt, showResult, loading, resultData, setInput, input } = useContext(Context);
+    const { onSent, recentPrompt, showResult, loading, resultData, setInput, input, extended, setExtended } = useContext(Context);
     const resultRef = useRef(null);
     
     const [isDarkMode, setIsDarkMode] = useState(false);
@@ -60,7 +60,15 @@ const Main = () => {
     return (
         <main className="main">
             <nav className="nav">
-                <p>OTA Travel App</p>
+                <div className="nav-left">
+                     <img 
+                        src={assets.menu_icon} 
+                        alt="Menu" 
+                        className="mobile-menu-toggle" 
+                        onClick={() => setExtended(prev => !prev)}
+                     /> 
+                    <p>OTA Travel App</p>
+                </div>
                 <div className="nav-right">
                     <button 
                         className="theme-toggle" 

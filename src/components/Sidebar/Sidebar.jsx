@@ -4,8 +4,7 @@ import {assets} from '../../assets/assets';
 import {Context} from '../../context/Context';
 
 const Sidebar = () => {
-    const [extended, setExtended] = useState(false);
-    const {onSent, prevPrompts, setRecentPrompt, newChat} = useContext(Context);
+    const {onSent, prevPrompts, setRecentPrompt, newChat, extended, setExtended} = useContext(Context);
 
     const loadPrompt = async (prompt) => {
         setRecentPrompt(prompt);
@@ -13,6 +12,7 @@ const Sidebar = () => {
     };
 
     return (
+        <>
         <aside className={`sidebar ${extended ? 'extended' : 'collapsed'}`}>
             <div className={`top ${extended ? '' : 'centered'}`}>
                 {/* Menu Toggle */}
@@ -68,6 +68,8 @@ const Sidebar = () => {
                 </div>
             </div>
         </aside>
+        {extended && <div className="sidebar-overlay" onClick={() => setExtended(false)}></div>}
+    </>
     );
 };
 

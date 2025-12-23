@@ -248,6 +248,23 @@
     display: none;
 }
 
+/* Mobile Overlay */
+.sidebar-overlay {
+    display: none;
+}
+
+@media (max-width: 800px) {
+    .sidebar-overlay {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(3px);
+        z-index: 999;
+        animation: fadeIn 0.3s ease-out;
+    }
+}
+
 /* Responsive */
 @media (max-width: 800px) {
     .sidebar {
@@ -255,44 +272,72 @@
         left: 0;
         top: 0;
         bottom: 0;
-        height: 100dvh; /* Dynamic viewport height for mobile browsers */
+        height: 100dvh;
         z-index: 1000;
+        box-shadow: none; /* No shadow when hidden */
+        transform: translateX(-100%); /* Hide by default */
+        width: 280px !important; /* Always wide when open on mobile */
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        background: var(--bg-sidebar);
+    }
+
+    .sidebar.extended {
+        transform: translateX(0); /* Slide in */
         box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
+    }
+    
+    .sidebar.collapsed {
+        width: 280px; /* Keep width structure, just hide via transform */
+    }
+    
+    /* Ensure internal elements are visible when open */
+    .sidebar.collapsed .recent,
+    .sidebar.collapsed .recent-title,
+    .sidebar.collapsed .recent-entry p,
+    .sidebar.collapsed .bottom-item p {
+        display: block !important;
+    }
+    
+    .sidebar.collapsed .recent-entry,
+    .sidebar.collapsed .bottom-item {
+        justify-content: flex-start;
+        padding: 12px 16px;
+    }
+    
+    .sidebar.collapsed .new-chat {
+        padding: 14px 20px;
+        justify-content: flex-start;
+        gap: 16px;
+        background: var(--new-chat-bg);
+    }
+    
+    .sidebar.collapsed .new-chat p {
+        display: block !important;
     }
 }
 
 @media (max-width: 480px) {
     .sidebar {
-        width: 60px;
-        padding: 20px 8px;
+        width: 85vw !important; /* Slightly smaller than full width */
+        max-width: 320px;
     }
     
     .sidebar.extended {
-        width: 100vw; /* Full width on verify small screens for better focus */
-        max-width: 320px;
-        background: rgba(255, 255, 255, 0.98);
-        box-shadow: 10px 0 40px rgba(0, 0, 0, 0.2);
+        width: 85vw !important;
     }
 
-    [data-theme="dark"] .sidebar.extended {
-        background: rgba(20, 25, 35, 0.98);
-    }
-    
     .menu {
-        width: 44px; /* Larger touch target */
+        width: 44px;
         height: 44px;
         border-radius: 14px;
     }
-
+    
+    /* Move menu to right for easy closing if preferred, or keep left */
+    .top {
+        align-items: flex-start;
+    }
+    
     .sidebar.extended .menu {
-        margin-left: auto; /* Push close button to right if desired, or keep left */
-    }
-
-    .new-chat {
-        padding: 12px;
-    }
-
-    .recent-entry p {
-        font-size: 16px; /* Larger text for reading */
+        align-self: flex-start;
     }
 }
