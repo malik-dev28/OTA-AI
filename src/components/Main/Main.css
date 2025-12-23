@@ -834,7 +834,7 @@ body {
 @media (max-width: 1024px) {
     .main-container {
         flex-direction: column;
-        padding: 20px 20px 0;
+        padding: 20px 20px 100px; /* Added bottom padding for scrolling space */
     }
     
     .right-sidebar {
@@ -856,28 +856,48 @@ body {
     }
 
     .suggestions {
+        display: flex; /* Ensure flex */
         flex-direction: row;
         overflow-x: auto;
         padding-bottom: 10px;
         gap: 12px;
+        scroll-snap-type: x mandatory; /* Snap scrolling */
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; /* Firefox */
+    }
+
+    .suggestions::-webkit-scrollbar {
+        display: none; /* Chrome/Safari */
     }
 
     .suggestion-card {
-        min-width: 240px;
+        min-width: 260px;
+        max-width: 300px;
         background: var(--bg-card);
         border: 1px solid var(--border-color);
-        padding: 12px;
-        flex-direction: row; /* Keep row for horizontal scrolling look */
+        padding: 16px;
+        flex-direction: row; 
         text-align: left;
+        scroll-snap-align: center; /* Snap to center */
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+    
+    .suggestion-card:active {
+        transform: scale(0.98);
     }
 
     .right-sidebar-title {
         font-size: 18px;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
+        padding-left: 10px;
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 800px) {
+    .main {
+        padding-left: 80px; /* Offset for fixed sidebar */
+    }
+
     .main .nav {
         padding: 15px 20px;
     }
@@ -887,6 +907,7 @@ body {
     .greet {
         font-size: 38px;
         margin-top: 30px;
+        line-height: 1.2;
     }
 
     .greet p:last-child {
@@ -896,6 +917,7 @@ body {
 
     .main-bottom {
         padding: 15px 20px;
+        left: 80px; /* Match main padding */
     }
 
     .search-box {
@@ -904,8 +926,8 @@ body {
     }
 
     .search-box textarea {
-        font-size: 16px;
-        min-height: 40px;
+        font-size: 16px; /* prevent zoom on ios */
+        min-height: 44px;
     }
 
     .result-data {
@@ -926,39 +948,68 @@ body {
 }
 
 @media (max-width: 480px) {
+    .main {
+        padding-left: 60px; /* Slimmer offset */
+    }
+
+    .main-bottom {
+        left: 60px;
+        padding: 12px;
+    }
+
     .nav-right {
-        gap: 10px;
+        gap: 12px;
     }
 
     .user-avatar {
-        width: 36px;
-        height: 36px;
+        width: 38px;
+        height: 38px;
     }
 
     .theme-toggle {
-        width: 36px;
-        height: 36px;
+        width: 38px;
+        height: 38px;
     }
 
     .main-container {
-        padding: 10px 15px 0;
+        padding: 10px 15px 120px; /* More bottom padding for mobile */
     }
 
     .greet {
         font-size: 28px;
+        margin-top: 10px;
+    }
+    
+    .greet p:last-child {
+        font-size: 16px;
     }
 
     .icon-container button {
-        width: 40px;
-        height: 40px;
+        width: 42px;
+        height: 42px;
     }
 
     .icon-container img {
         width: 20px;
         height: 20px;
     }
+    
+    .result-data {
+        background: transparent; /* Cleaner look on small screens */
+        box-shadow: none;
+        padding: 0;
+        border: none;
+    }
+    
+    .result-data-icon {
+        display: none; /* Hide icon to save space on mobile chat */
+    }
 
-    /* Hide less important icons on very small screens if needed, or keep compact */
+    /* Floating Input adjustments */
+    .search-box {
+        border-radius: 24px;
+        box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+    }
 }
 
 /* Print Styles */

@@ -254,50 +254,45 @@
         position: fixed;
         left: 0;
         top: 0;
-        height: 100%;
-    }
-}
-
-@media (max-width: 600px) {
-    .sidebar {
-        padding: 25px 12px;
-    }
-    
-    .sidebar.extended {
-        width: 260px;
-    }
-    
-    .recent-entry-p {
-        max-width: 160px;
-    }
-}
-
-@media (max-width: 800px) {
-    .sidebar {
-        /* On mobile/tablet, make sidebar an overlay or fixed strip */
-        position: fixed;
-        left: 0;
-        top: 0;
-        bottom: 0; /* ensure full height */
-        height: 100svh;
-        z-index: 999;
-        /* Keep it slim unless expanded */
+        bottom: 0;
+        height: 100dvh; /* Dynamic viewport height for mobile browsers */
+        z-index: 1000;
+        box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
     }
 }
 
 @media (max-width: 480px) {
     .sidebar {
-        width: 60px; /* Slimmer on mobile */
-        padding: 20px 10px;
+        width: 60px;
+        padding: 20px 8px;
     }
     
     .sidebar.extended {
-        width: 100%; /* Full screen menu on mobile expand */
-        max-width: 280px; 
+        width: 100vw; /* Full width on verify small screens for better focus */
+        max-width: 320px;
+        background: rgba(255, 255, 255, 0.98);
+        box-shadow: 10px 0 40px rgba(0, 0, 0, 0.2);
+    }
+
+    [data-theme="dark"] .sidebar.extended {
+        background: rgba(20, 25, 35, 0.98);
     }
     
     .menu {
-        width: 40px;
-        height: 40px;
+        width: 44px; /* Larger touch target */
+        height: 44px;
+        border-radius: 14px;
+    }
+
+    .sidebar.extended .menu {
+        margin-left: auto; /* Push close button to right if desired, or keep left */
+    }
+
+    .new-chat {
+        padding: 12px;
+    }
+
+    .recent-entry p {
+        font-size: 16px; /* Larger text for reading */
     }
 }
