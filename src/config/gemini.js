@@ -67,4 +67,35 @@ async function run(prompt) {
     return result.response.text();
 }
 
+export async function extractFlightParams(prompt) {
+    const extractionPrompt = `
+    Analyze the following user query to see if it is a flight search request.
+    If it IS a flight search, extract the following parameters in JSON format:
+    - origin (IATA code if possible, or city name)
+    - destination (IATA code if possible, or city name)
+    - departureDate (YYYY-MM-DD format. If "Christmas" or "next Friday", calculate the date for 2025 unless specified. Today is ${new Date().toISOString().split('T')[0]})
+    - returnDate (YYYY-MM-DD format, optional)
+    - adults (number, default 1)
+    
+    If it is NOT a flight search, return "null" (string).
+    
+    User Query: "${prompt}"
+    
+    Output strictly JSON or "null". Do not add markdown formatting.
+    `;
+
+    const result = await model.generateContent(extractionPrompt);
+    const text = result.response.text().trim();
+    
+    try {
+        // Clean up markdown code blocks if present
+        const jsonStr = text.replace(/```json/g, '').replace(/```/g, '').trim();
+        if (jsonStr === "null") return null;
+        return JSON.parse(jsonStr);
+    } catch (e) {
+        console.error("Failed to parse flight params", e);
+        return null;
+    }
+}
+
 export default run;

@@ -1,5 +1,6 @@
 import {createContext, useState} from "react";
-import runChat from "../config/gemini";
+import runChat, { extractFlightParams } from "../config/gemini";
+import { searchFlights } from "../api/amadeus";
 
 export const Context = createContext();
 
@@ -36,7 +37,61 @@ const ContextProvider = (props) => {
             } else {
                 setPrevPrompts(prev => [...prev, input]);
                 setRecentPrompt(input);
-                response = await runChat(input);
+                
+                // Check if it's a flight request
+                const flightParams = await extractFlightParams(input);
+                
+                if (flightParams) {
+                    try {
+                        const flightData = await searchFlights(
+                            flightParams.origin,
+                            flightParams.destination,
+                            flightParams.departureDate,
+                            flightParams.returnDate,
+                            flightParams.adults
+                        );
+                        
+                        if (flightData && flightData.success && flightData.data.amadeusRawJson.data.length > 0) {
+                            const offers = flightData.data.amadeusRawJson.data.slice(0, 3); // Top 3
+                            let offersHtml = "<h3>Found Flights:</h3>";
+                            
+                            offers.forEach((offer, index) => {
+                                const price = `${offer.price.currency} ${offer.price.grandTotal}`;
+                                const segments = offer.itineraries[0].segments;
+                                const carrier = segments[0].carrierCode; // Simplification
+                                const duration = offer.itineraries[0].duration.replace('PT', '').toLowerCase();
+                                
+                                offersHtml += `
+                                    <div class="flight-offer" style="margin-bottom: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
+                                        <strong>Option ${index + 1}</strong><br/>
+                                        Price: ${price}<br/>
+                                        Duration: ${duration}<br/>
+                                        Airline: ${carrier}
+                                    </div>
+                                `;
+                            });
+                            response = offersHtml;
+                        } else {
+                            response = "I searched for flights but couldn't find any available options for those dates/routes.";
+                        }
+                    } catch (err) {
+                        console.error("Flight search error", err);
+                        response = "I encountered an error while searching for flights. Please try again later.";
+                    }
+                } else {
+                    response = await runChat(input);
+                }
+            }
+
+            // Normal Gemini formatting if it's not HTML already (flight results are parsing as HTML string)
+            // But verify if response is the flight HTML or Gemini markdown text.
+            
+            // If response starts with <, treat as HTML, else format markdown
+            if (response.trim().startsWith("<")) {
+                setResultData(response);
+                setLoading(false);
+                setInput("");
+                return; 
             }
 
             let responseArray = response.split("**");
