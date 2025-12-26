@@ -13,6 +13,7 @@ const ContextProvider = (props) => {
     const [loading, setLoading] = useState(false);
     const [resultData, setResultData] = useState("");
     const [extended, setExtended] = useState(false);
+    const [flightSearchParams, setFlightSearchParams] = useState(null);
 
     const delayPara = (index, nextWord) => {
         setTimeout(function () {
@@ -42,42 +43,10 @@ const ContextProvider = (props) => {
                 const flightParams = await extractFlightParams(input);
                 
                 if (flightParams) {
-                    try {
-                        const flightData = await searchFlights(
-                            flightParams.origin,
-                            flightParams.destination,
-                            flightParams.departureDate,
-                            flightParams.returnDate,
-                            flightParams.adults
-                        );
-                        
-                        if (flightData && flightData.success && flightData.data.amadeusRawJson.data.length > 0) {
-                            const offers = flightData.data.amadeusRawJson.data.slice(0, 3); // Top 3
-                            let offersHtml = "<h3>Found Flights:</h3>";
-                            
-                            offers.forEach((offer, index) => {
-                                const price = `${offer.price.currency} ${offer.price.grandTotal}`;
-                                const segments = offer.itineraries[0].segments;
-                                const carrier = segments[0].carrierCode; // Simplification
-                                const duration = offer.itineraries[0].duration.replace('PT', '').toLowerCase();
-                                
-                                offersHtml += `
-                                    <div class="flight-offer" style="margin-bottom: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
-                                        <strong>Option ${index + 1}</strong><br/>
-                                        Price: ${price}<br/>
-                                        Duration: ${duration}<br/>
-                                        Airline: ${carrier}
-                                    </div>
-                                `;
-                            });
-                            response = offersHtml;
-                        } else {
-                            response = "I searched for flights but couldn't find any available options for those dates/routes.";
-                        }
-                    } catch (err) {
-                        console.error("Flight search error", err);
-                        response = "I encountered an error while searching for flights. Please try again later.";
-                    }
+                    setFlightSearchParams(flightParams);
+                    setLoading(false);
+                    setInput("");
+                    return;
                 } else {
                     response = await runChat(input);
                 }
@@ -131,8 +100,11 @@ const ContextProvider = (props) => {
         input,
         setInput,
         newChat,
+        newChat,
         extended,
-        setExtended
+        setExtended,
+        flightSearchParams,
+        setFlightSearchParams
     }
     return (
         <Context.Provider value={contextValue}>

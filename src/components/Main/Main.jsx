@@ -1,13 +1,22 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Main.css';
 import { assets } from "../../assets/assets.js";
 import { Context } from "../../context/Context.jsx";
 
 const Main = () => {
-    const { onSent, recentPrompt, showResult, loading, resultData, setInput, input, extended, setExtended } = useContext(Context);
+    const { onSent, recentPrompt, showResult, loading, resultData, setInput, input, extended, setExtended, flightSearchParams, setFlightSearchParams } = useContext(Context);
     const resultRef = useRef(null);
+    const navigate = useNavigate();
     
     const [isDarkMode, setIsDarkMode] = useState(false);
+
+    useEffect(() => {
+        if (flightSearchParams) {
+            navigate('/flights', { state: flightSearchParams });
+            setFlightSearchParams(null); // Clear params after navigating
+        }
+    }, [flightSearchParams, navigate, setFlightSearchParams]);
 
     useEffect(() => {
         const dark = document.documentElement.getAttribute('data-theme') === 'dark';
