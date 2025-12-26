@@ -1,5 +1,5 @@
 import {createContext, useState} from "react";
-import runChat, { extractFlightParams } from "../config/gemini";
+import { runBedrockChat, extractFlightParamsBedrock } from "../api/bedrock";
 import { searchFlights } from "../api/amadeus";
 
 export const Context = createContext();
@@ -32,37 +32,28 @@ const ContextProvider = (props) => {
         setShowResult(true);
         let response;
         try {
-            if (prompt !== undefined) {
-                response = await runChat(prompt);
-                setRecentPrompt(prompt);
-            } else {
-                setPrevPrompts(prev => [...prev, input]);
-                setRecentPrompt(input);
-                
-                // Check if it's a flight request
-                const flightParams = await extractFlightParams(input);
-                
-                if (flightParams) {
-                    setFlightSearchParams(flightParams);
-                    setLoading(false);
-                    setInput("");
-                    return;
-                } else {
-                    response = await runChat(input);
-                }
-            }
-
-            // Normal Gemini formatting if it's not HTML already (flight results are parsing as HTML string)
-            // But verify if response is the flight HTML or Gemini markdown text.
+            // Determine the question to ask
+            const promptToSend = prompt !== undefined ? prompt : input;
             
-            // If response starts with <, treat as HTML, else format markdown
-            if (response.trim().startsWith("<")) {
-                setResultData(response);
+            setPrevPrompts(prev => [...prev, promptToSend]);
+            setRecentPrompt(promptToSend);
+
+            // 1. Analyze for Flight Params (Using Python/Bedrock Backend)
+            // Note: The python backend should be running on localhost:8000
+            const flightParams = await extractFlightParamsBedrock(promptToSend);
+            
+            if (flightParams) {
+                // If it is a flight intent, trigger navigation directly
+                setFlightSearchParams(flightParams);
                 setLoading(false);
                 setInput("");
-                return; 
+                return;
+            } else {
+                // 2. Otherwise, treat as normal chat (Using Python/Bedrock Backend)
+                response = await runBedrockChat(promptToSend);
             }
 
+            // Simple formatting for the response
             let responseArray = response.split("**");
             let newResponse = "";
             for (let i = 0; i < responseArray.length; i++) {
@@ -81,7 +72,7 @@ const ContextProvider = (props) => {
             }
         } catch (error) {
             console.error("Error fetching chat response:", error);
-            setResultData("Error fetching response. Please try again.");
+            setResultData("Error connecting to AI Backend. Is the Python server running?");
         } finally {
             setLoading(false);
             setInput("");
