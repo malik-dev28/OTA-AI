@@ -91,7 +91,6 @@ const ContextProvider = (props) => {
         input,
         setInput,
         newChat,
-        newChat,
         extended,
         setExtended,
         flightSearchParams,

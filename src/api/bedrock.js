@@ -1,10 +1,11 @@
+import { API_ENDPOINTS } from '../config/api';
 
 /**
  * API function to talk to the Python Backend (Bedrock)
  */
 export const runBedrockChat = async (prompt) => {
     try {
-        const response = await fetch('http://localhost:8000/api/chat', {
+        const response = await fetch(API_ENDPOINTS.chat, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -24,7 +25,7 @@ export const runBedrockChat = async (prompt) => {
 
 export const extractFlightParamsBedrock = async (prompt) => {
     try {
-        const response = await fetch('http://localhost:8000/api/analyze-flight', {
+        const response = await fetch(API_ENDPOINTS.analyzeFlightParams, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
